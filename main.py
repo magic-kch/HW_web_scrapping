@@ -30,7 +30,7 @@ vacancy_all_data = vacancy_list_tag.find_elements(By.CLASS_NAME, "vacancy-search
 
 parsed_data = []
 
-for vacancy in vacancy_all_data[:5]:
+for vacancy in vacancy_all_data[]:
 
     h2 = wait_element(vacancy, 1, By.TAG_NAME, "h2")
     title = h2.text.strip()
@@ -44,42 +44,38 @@ for vacancy in vacancy_all_data[:5]:
     company = wait_element(vacancy, 1, By.CLASS_NAME, "company-info-text--vgvZouLtf8jwBmaD1xgp")
     company = company.text
 
-    # city = wait_element(vacancy, 1, By.CLASS_NAME, "wide-container--lnYNwDTY2HXOzvtbTaHf")
-    # city = wait_element(city, 1, By.CLASS_NAME, "fake-magritte-primary-text--Hdw8FvkOzzOcoR4xXWni")
-    # city = city.text
-
+    # city = wait_element(vacancy, 1, By.CSS_SELECTOR, 'data-qa="vacancy-serp__vacancy-address"')
+    city = ""
     parsed_data.append(
         {
 
             "title": title,
             "link": link,
-            "cash": cash.strip(),
+            "cash": cash.replace('\u202f', '').strip(),
             "company": company.strip(),
             "city": city
         }
     )
 
 
-# result_data = dict()
-#
-# for item in parsed_data[:5]:
-#     browser.get(item["link"])
-#     # vacancy_company_info = browser.find_element(By.CLASS_NAME, "vacancy-company-redesigned")
-#     # vacancy_city = wait_element(vacancy_company_info, 1, By.TAG_NAME, "p")
-#     # item["city"] = vacancy_city.text
-#     vacancy_data = browser.find_element(By.CLASS_NAME, "g-user-content")
-#     vacancy_data = vacancy_data.text
-#
-#     if "flask" in vacancy_data.lower() or "django" in vacancy_data.lower():
-#         result_data[item["title"]] = {"Ссылка": item["link"],
-#                                       "Зарплата": item["cash"],
-#                                       "Название компании": item["company"],
-#                                       "Город": item["city"]}
+result_data = dict()
+
+for item in parsed_data:
+    browser.get(item["link"])
+
+    vacancy_data = browser.find_element(By.CLASS_NAME, "g-user-content")
+    vacancy_data = vacancy_data.text
+
+    if "flask" in vacancy_data.lower() or "django" in vacancy_data.lower() :
+        result_data[item["title"]] = {"Ссылка": item["link"],
+                                      "Зарплата": item["cash"],
+                                      "Название компании": item["company"],
+                                      "Город": item["city"]}
 
 
 
 
 
-pprint(parsed_data)
-# pprint(result_data)
+# pprint(parsed_data)
+pprint(result_data)
 browser.close()
