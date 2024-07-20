@@ -5,3 +5,5 @@
 `pip install -r requirements.txt`
 
 2. Запустить main.py
+
+3. В результате появится файл `result.json` с необходимой выборкой
